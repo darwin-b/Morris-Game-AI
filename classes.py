@@ -27,6 +27,7 @@ class Board:
                 "g3" : None,
                 "g6" : None,
             }
+
     # Ignore this method
     # test function to check pass by val and reference
     def test(self):
@@ -40,10 +41,15 @@ class Board:
 
 
 
-    # Input: board position (self)
-    # output: list of board positions
-    def generate_add(self,board=None):
+###################################################################################
+# Input: board position (self)
+# output: list of board positions
+###################################################################################
+    def generate_add(self,board=None,color=None):
         positions_list=[]
+        if color is None:
+            color ="w"
+            
         if board is None:
             print("Board position Not entered"
                  +" Return empty list or copy board configuration")
@@ -55,7 +61,7 @@ class Board:
         for location in board:
             if board[location] is None:
                 new_position = board.copy()
-                new_position[location] = "w"
+                new_position[location] = color
             else:
                 continue
 
@@ -77,55 +83,46 @@ class Board:
         #     print()
         return positions_list
 
-    def generate_moves_opening(self):
+
+        
+###################################################################################
+# Input: board position (self)
+# Output: list of board positions (positions_list)
+###################################################################################
+    def generate_moves_opening(self,color=None):
+        if color is None:
+            color = "w"
+        return self.generate_add(color)
         pass
-    
-    def generate_moves_mid_endgame(self):
-        pass
-
-    def generate_move(self):
-        pass
 
 
+###################################################################################
+# Input: board position (self)
+# Output: list of board positions (positions_list)
+###################################################################################
+    def generate_moves_mid_endgame(self,color=None):
+        if color is None:
+            color="w"
 
-    # Input: board_position and list of positions (positions_list))
-    # Output: list of positions added to L by removing black pieces
-    # Q: how de we flip colors without taking color parameter ?
-    def generate_remove(self,board,positions_list):
-        count_positions_added=0
+        board = self.board_position
+        count_color_pieces = 0
+
         for location in board:
-            if board[location] == "b":
-                if not self.closemill(location,board):
-                    new_position = board.copy()
-                    new_position[location] = None
-                    print(new_position)
-                    print("location removed:  "+location)
-                    print("=======================")
-                    print("=======================")
-                    print("")
-                    positions_list.append(new_position)
-                    count_positions_added +=1
-
-        if count_positions_added == 0:
-            print(board)
-            print("location removed:  "+"none as all black in mill positions")
-            print("=======================")
-            print("=======================")
-            print()
-            positions_list.append(board)
-
-        pass
-
-    def generate_hopping(self):
-        pass
-
-    def neighbours(self):
+            if board[location] == color:
+                count_color_pieces += 1
+        
+        if count_color_pieces == 3:
+            return self.generate_hopping(color)
+        else:
+            return self.generate_move(color)
+        
         pass
 
 
-
-    # input : location of piece placed (key in dictionary) and board_position (dictionary)
-    # output: boolean --> true if the move closes a mill
+###################################################################################
+# input : location of piece placed (key in dictionary) and board_position (dictionary)
+# output: boolean --> true if the move closes a mill
+###################################################################################
     def closemill(self,location,board=None):
         if board is None:
             board = self.board_position
@@ -169,8 +166,101 @@ class Board:
 
 
 
-    # input: location on the board "g0"
-    # output: list of neighbouring locations ["d6","g3"]
+###################################################################################
+# Input: board position (self)
+# Output: list of board positions (positions_list)
+###################################################################################
+    def generate_move(self,color):
+        positions_list = []
+        board = self.board_position
+        if color is None:
+            color ="w"
+
+        for location in board:
+            if board[location] == color:
+                neighbors = self.neighbors(location)
+                for neighbor in neighbors:
+                    if board[neighbor] == None:
+                        new_position = board.copy()
+                        new_position[location]  = None
+                        board[neighbor] = color
+                        if self.closemill(neighbor,new_position):
+                            self.generate_remove(new_position,positions_list)
+                        else:
+                            positions_list.append(new_position)
+
+        return positions_list
+        pass
+
+
+
+###################################################################################
+# Input: board_position and list of positions (positions_list))
+# Output: list of positions added to L by removing black pieces
+# Q: how de we flip colors without taking color parameter ?
+###################################################################################
+    def generate_remove(self,board,positions_list,color=None):
+        count_positions_added=0
+        if color is None:
+            color ="b"
+
+        for location in board:
+            if board[location] == color:
+                if not self.closemill(location,board):
+                    new_position = board.copy()
+                    new_position[location] = None
+                    print(new_position)
+                    print("location removed:  "+location)
+                    print("=======================")
+                    print("=======================")
+                    print("")
+                    positions_list.append(new_position)
+                    count_positions_added +=1
+
+        if count_positions_added == 0:
+            print(board)
+            print("location removed:  "+"none as all black in mill positions")
+            print("=======================")
+            print("=======================")
+            print()
+            positions_list.append(board)
+
+        return positions_list
+
+
+
+###################################################################################        
+# Input: board postion (self)
+# Output: list of board positions (positions_list)
+###################################################################################
+    def generate_hopping(self,color=None):
+        positions_list = []
+        board = self.board_position
+        if color is None:
+            color ="w"
+
+        for location1 in board:
+            if board[location1] == color:
+                for location2 in board:
+                    if board[location2] is None:
+                        new_position = board.copy()
+                        new_position[location1] = None
+                        new_position[location2] = color
+                        
+                        if self.closemill(location2,new_position):
+                            self.generate_remove(new_position,positions_list)
+                        else:
+                            positions_list.append(new_position)
+
+        return positions_list
+
+        pass
+
+
+###################################################################################
+# input: location on the board "g0"
+# output: list of neighbouring locations ["d6","g3"]
+###################################################################################
     def neighbors(self,location):
         graph = {
                     "a0" : ["a3","g0","b1"],
@@ -198,6 +288,12 @@ class Board:
 
         return graph[location]
 
+
+
+###################################################################################
+# Input:
+# Output:
+###################################################################################
     def static_estimation(self):
         pass
 
