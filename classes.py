@@ -87,7 +87,7 @@ class Board:
         if color is None:
             color = "w"
         return self.generate_add(color=color)
-        pass
+        
 
 
 ###################################################################################
@@ -110,7 +110,7 @@ class Board:
         else:
             return self.generate_move(color)
         
-        pass
+        
 
 
 ###################################################################################
@@ -174,7 +174,7 @@ class Board:
             if board[location] == color:
                 neighbors = self.neighbors(location)
                 for neighbor in neighbors:
-                    if board[neighbor] == None:
+                    if board[neighbor] is None:
                         new_position = board.copy()
                         new_position[location]  = None
                         new_position[neighbor] = color
@@ -190,7 +190,7 @@ class Board:
                             positions_list.append(new_position)
 
         return positions_list
-        pass
+        
 
 
 
@@ -261,7 +261,7 @@ class Board:
 
         return positions_list
 
-        pass
+        
 
 
 ###################################################################################
@@ -354,5 +354,3 @@ class Board:
 ###################################################################################
     def static_estimation(self):
         pass
-
-
