@@ -65,22 +65,16 @@ class Board:
             else:
                 continue
 
+            print("location : "+location)
             if self.closemill(location,new_position):
                 self.generate_remove(new_position,positions_list)        
             else:
-                print(new_position)
-                print("location : "+location)
+                self.display_position(new_position)
                 print("=======================")
                 print("=======================")
                 print("")
                 positions_list.append(new_position)
 
-
-        # for pos in positions_list:
-        #     print(pos)
-        #     print("=======================")
-        #     print("=======================")
-        #     print()
         return positions_list
 
 
@@ -92,7 +86,7 @@ class Board:
     def generate_moves_opening(self,color=None):
         if color is None:
             color = "w"
-        return self.generate_add(color)
+        return self.generate_add(color=color)
         pass
 
 
@@ -156,10 +150,10 @@ class Board:
         # print("=====================")
 
         for mill in mills[location]:
-            print(mill[0],mill[1],location)
-            print(board[mill[0]], board[mill[1]], board[location])
+            # print(mill[0],mill[1],location)
+            # print(board[mill[0]], board[mill[1]], board[location])
             if (board[mill[0]] == board[mill[1]] == board[location]) and board[location] is not None:
-                print("Mill True")
+                # print("Mill True")
                 return True
 
         return False
@@ -170,7 +164,7 @@ class Board:
 # Input: board position (self)
 # Output: list of board positions (positions_list)
 ###################################################################################
-    def generate_move(self,color):
+    def generate_move(self,color=None):
         positions_list = []
         board = self.board_position
         if color is None:
@@ -183,10 +177,16 @@ class Board:
                     if board[neighbor] == None:
                         new_position = board.copy()
                         new_position[location]  = None
-                        board[neighbor] = color
+                        new_position[neighbor] = color
+
+                        print("Moving : "+location+ " to "+neighbor)
                         if self.closemill(neighbor,new_position):
                             self.generate_remove(new_position,positions_list)
                         else:
+                            self.display_position(new_position)
+                            print("=======================")
+                            print("=======================")
+                            print("")
                             positions_list.append(new_position)
 
         return positions_list
@@ -209,8 +209,9 @@ class Board:
                 if not self.closemill(location,board):
                     new_position = board.copy()
                     new_position[location] = None
-                    print(new_position)
+
                     print("location removed:  "+location)
+                    self.display_position(new_position)
                     print("=======================")
                     print("=======================")
                     print("")
@@ -218,8 +219,9 @@ class Board:
                     count_positions_added +=1
 
         if count_positions_added == 0:
-            print(board)
+
             print("location removed:  "+"none as all black in mill positions")
+            self.display_position(board)
             print("=======================")
             print("=======================")
             print()
@@ -247,9 +249,14 @@ class Board:
                         new_position[location1] = None
                         new_position[location2] = color
                         
+                        print("hopping : "+location1+ " to "+location2)
                         if self.closemill(location2,new_position):
                             self.generate_remove(new_position,positions_list)
                         else:
+                            self.display_position(new_position)
+                            print("=======================")
+                            print("=======================")
+                            print("")                           
                             positions_list.append(new_position)
 
         return positions_list
@@ -289,6 +296,57 @@ class Board:
         return graph[location]
 
 
+
+###################################################################################
+# Input:
+# Output:
+###################################################################################
+    def display_position(self,board=None):
+        if board is None:
+            board = self.board_position.copy()
+
+        for location in board:
+            if board[location] is None:
+                board[location]=" "
+            else:
+                board[location]=board[location].upper()
+        
+        r=6
+        c=6
+
+        for i in range(r,-1,-1):
+            display =""
+            for j in range(0,7):
+                location = chr(j+97)+str(i)
+                if location in board:
+                    display+=" "+board[location]+" "
+                else:
+                    display+="---"
+            print(display)
+            
+            if i==6:
+                print(" | "+"   "+"   "+" | "+"   "+"   "+" | ")
+                print(" | "+"   "+"   "+" | "+"   "+"   "+" | ")
+            elif i==5:
+                print(" | "+" | "+"   "+" | "+"   "+" | "+" | ")
+                print(" | "+" | "+"   "+" | "+"   "+" | "+" | ")
+            elif i ==4:
+                print(" | "+" | "+" | "+"   "+" | "+" | "+" | ")
+                print(" | "+" | "+" | "+"   "+" | "+" | "+" | ")
+            elif i==3:
+                print(" | "+" | "+" | "+"   "+" | "+" | "+" | ")
+                print(" | "+" | "+" | "+"   "+" | "+" | "+" | ")
+            elif i==2:
+                print(" | "+" | "+"   "+" | "+"   "+" | "+" | ")
+                print(" | "+" | "+"   "+" | "+"   "+" | "+" | ")
+            elif i==1:
+                print(" | "+"   "+"   "+" | "+"   "+"   "+" | ")
+                print(" | "+"   "+"   "+" | "+"   "+"   "+" | ")
+            else:
+                print("")
+                print("")
+                
+       
 
 ###################################################################################
 # Input:
