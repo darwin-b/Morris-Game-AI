@@ -27,6 +27,12 @@ class Board:
                 "g3" : None,
                 "g6" : None,
             }
+        self.parent = None
+        self.depth = None
+        self.child_positions = []
+        self.static_estimate = None
+        self.white_move = None
+        self.black_move =None
 
     # Ignore this method
     # test function to check pass by val and reference
@@ -49,15 +55,20 @@ class Board:
         positions_list=[]
         if color is None:
             color ="w"
-            
+
+        if color == "w":
+            color_remove = "b"
+        else:
+            color_remove="w"
+
         if board is None:
-            print("Board position Not entered"
-                 +" Return empty list or copy board configuration")
+            # print("Board position Not entered"
+            #      +" Return empty list or copy board configuration")
             board = self.board_position
             # return []
 
-        print("")
-        print("")
+        # print("")
+        # print("")
         for location in board:
             if board[location] is None:
                 new_position = board.copy()
@@ -65,14 +76,14 @@ class Board:
             else:
                 continue
 
-            print("location : "+location)
+            # print("location : "+location)
             if self.closemill(location,new_position):
-                self.generate_remove(new_position,positions_list)        
+                self.generate_remove(new_position,positions_list,color=color_remove)        
             else:
-                self.display_position(new_position)
-                print("=======================")
-                print("=======================")
-                print("")
+                # self.display_position(new_position)
+                # print("=======================")
+                # print("=======================")
+                # print("")
                 positions_list.append(new_position)
 
         return positions_list
@@ -87,7 +98,7 @@ class Board:
         if color is None:
             color = "w"
         return self.generate_add(color=color)
-        pass
+        
 
 
 ###################################################################################
@@ -110,7 +121,7 @@ class Board:
         else:
             return self.generate_move(color)
         
-        pass
+        
 
 
 ###################################################################################
@@ -170,27 +181,32 @@ class Board:
         if color is None:
             color ="w"
 
+        if color == "w":
+            color_remove = "b"
+        else:
+            color_remove="w"
+
         for location in board:
             if board[location] == color:
                 neighbors = self.neighbors(location)
                 for neighbor in neighbors:
-                    if board[neighbor] == None:
+                    if board[neighbor] is None:
                         new_position = board.copy()
                         new_position[location]  = None
                         new_position[neighbor] = color
 
-                        print("Moving : "+location+ " to "+neighbor)
+                        # print("Moving : "+location+ " to "+neighbor)
                         if self.closemill(neighbor,new_position):
-                            self.generate_remove(new_position,positions_list)
+                            self.generate_remove(new_position,positions_list,color=color_remove)
                         else:
-                            self.display_position(new_position)
-                            print("=======================")
-                            print("=======================")
-                            print("")
+                            # self.display_position(new_position)
+                            # print("=======================")
+                            # print("=======================")
+                            # print("")
                             positions_list.append(new_position)
 
         return positions_list
-        pass
+        
 
 
 
@@ -210,21 +226,21 @@ class Board:
                     new_position = board.copy()
                     new_position[location] = None
 
-                    print("location removed:  "+location)
-                    self.display_position(new_position)
-                    print("=======================")
-                    print("=======================")
-                    print("")
+                    # print("location removed:  "+location)
+                    # self.display_position(new_position)
+                    # print("=======================")
+                    # print("=======================")
+                    # print("")
                     positions_list.append(new_position)
                     count_positions_added +=1
 
         if count_positions_added == 0:
 
-            print("location removed:  "+"none as all black in mill positions")
-            self.display_position(board)
-            print("=======================")
-            print("=======================")
-            print()
+            # print("location removed:  "+"none as all black in mill positions")
+            # self.display_position(board)
+            # print("=======================")
+            # print("=======================")
+            # print()
             positions_list.append(board)
 
         return positions_list
@@ -241,6 +257,11 @@ class Board:
         if color is None:
             color ="w"
 
+        if color == "w":
+            color_remove = "b"
+        else:
+            color_remove="w"
+
         for location1 in board:
             if board[location1] == color:
                 for location2 in board:
@@ -249,19 +270,19 @@ class Board:
                         new_position[location1] = None
                         new_position[location2] = color
                         
-                        print("hopping : "+location1+ " to "+location2)
+                        # print("hopping : "+location1+ " to "+location2)
                         if self.closemill(location2,new_position):
-                            self.generate_remove(new_position,positions_list)
+                            self.generate_remove(new_position,positions_list,color=color_remove)
                         else:
                             self.display_position(new_position)
-                            print("=======================")
-                            print("=======================")
-                            print("")                           
+                            # print("=======================")
+                            # print("=======================")
+                            # print("")                           
                             positions_list.append(new_position)
 
         return positions_list
 
-        pass
+        
 
 
 ###################################################################################
@@ -344,7 +365,7 @@ class Board:
                 print(" | "+"   "+"   "+" | "+"   "+"   "+" | ")
             else:
                 print("")
-                print("")
+
                 
        
 
@@ -352,7 +373,77 @@ class Board:
 # Input:
 # Output:
 ###################################################################################
-    def static_estimation(self):
-        pass
+    def static_estimation_opening(self,board=None):
+        n_white=0
+        n_black=0
+        n_empty=0
+        if board is None:
+            board = self.board_position
+
+        for location in board:
+            if board[location] == "w":
+                n_white +=1
+            elif board[location] == "b":
+                n_black +=1
+            else : 
+                n_empty +=0
+        return (n_white - n_black)
+
+    def static_estimation_opening_black(self,board=None):
+        n_white=0
+        n_black=0
+        n_empty=0
+        if board is None:
+            board = self.board_position
+
+        for location in board:
+            if board[location] == "w":
+                n_white +=1
+            elif board[location] == "b":
+                n_black +=1
+            else : 
+                n_empty +=0
+        return (n_black - n_white)        
+
+    # def max_child(self,board=None):
+    #     max_static = -10000
+    #     for child in self.child_positions:
+    #         if max_static < child.static_estimate:
+    #             max_static = child.static_estimate
+
+    def write(self,output_file):
+
+        temp_board = self.board_position.copy()
+        for _loc in temp_board:
+            if temp_board[_loc] is None:
+                temp_board[_loc]="x"
+            else:
+                temp_board[_loc]=temp_board[_loc].upper()
+
+        text =""
+        text += temp_board["a0"]
+        text += temp_board["g0"]
+        text += temp_board["b1"]
+        text += temp_board["f1"]
+        text += temp_board["c2"]
+        text += temp_board["e2"]
+        text += temp_board["a3"]
+        text += temp_board["b3"]
+        text += temp_board["c3"]
+        text += temp_board["e3"]
+        text += temp_board["f3"]
+        text += temp_board["g3"]
+        text += temp_board["c4"]
+        text += temp_board["d4"]
+        text += temp_board["e4"]
+        text += temp_board["b5"]
+        text += temp_board["d5"]
+        text += temp_board["f5"]
+        text += temp_board["a6"]
+        text += temp_board["d6"]
+        text += temp_board["g6"]
+
+        with open(output_file,"w") as file_writer:
+            file_writer.write(text)
 
 
