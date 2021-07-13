@@ -1,4 +1,5 @@
 from MiniMaxOpening import minimax_opening
+from MiniMaxMidgame import minimax_midgame
 from classes import Board
 import sys
 import os
@@ -91,7 +92,8 @@ pos = {
 }
 input_pos = pos
 
-computer_move=minimax_opening(input_pos,depth)
+# computer_move=minimax_opening(input_pos,depth)
+computer_move = minimax_midgame(input_pos,depth=2)
 computer_move.write(output_file)
 
 print("\n")
