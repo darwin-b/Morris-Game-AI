@@ -387,11 +387,63 @@ class Board:
                 n_black +=1
             else : 
                 n_empty +=0
-        
         return (n_white - n_black)
+
+    def static_estimation_opening_black(self,board=None):
+        n_white=0
+        n_black=0
+        n_empty=0
+        if board is None:
+            board = self.board_position
+
+        for location in board:
+            if board[location] == "w":
+                n_white +=1
+            elif board[location] == "b":
+                n_black +=1
+            else : 
+                n_empty +=0
+        return (n_black - n_white)        
 
     # def max_child(self,board=None):
     #     max_static = -10000
     #     for child in self.child_positions:
     #         if max_static < child.static_estimate:
     #             max_static = child.static_estimate
+
+    def write(self,output_file):
+
+        temp_board = self.board_position.copy()
+        for _loc in temp_board:
+            if temp_board[_loc] is None:
+                temp_board[_loc]="x"
+            else:
+                temp_board[_loc]=temp_board[_loc].upper()
+
+        text =""
+        text += temp_board["a0"]
+        text += temp_board["g0"]
+        text += temp_board["b1"]
+        text += temp_board["f1"]
+        text += temp_board["c2"]
+        text += temp_board["e2"]
+        text += temp_board["a3"]
+        text += temp_board["b3"]
+        text += temp_board["c3"]
+        text += temp_board["e3"]
+        text += temp_board["f3"]
+        text += temp_board["g3"]
+        text += temp_board["c4"]
+        text += temp_board["d4"]
+        text += temp_board["e4"]
+        text += temp_board["b5"]
+        text += temp_board["d5"]
+        text += temp_board["f5"]
+        text += temp_board["a6"]
+        text += temp_board["d6"]
+        text += temp_board["g6"]
+
+        with open(output_file,"w") as file_writer:
+            file_writer.write(text)
+
+
