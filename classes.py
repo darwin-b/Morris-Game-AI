@@ -368,7 +368,6 @@ class Board:
 
                 
        
-
 ###################################################################################
 # Input:
 # Output:
@@ -389,6 +388,12 @@ class Board:
                 n_empty +=0
         return (n_white - n_black)
 
+
+
+###################################################################################
+# Input:
+# Output:
+###################################################################################
     def static_estimation_opening_black(self,board=None):
         n_white=0
         n_black=0
@@ -405,12 +410,43 @@ class Board:
                 n_empty +=0
         return (n_black - n_white)        
 
-    # def max_child(self,board=None):
-    #     max_static = -10000
-    #     for child in self.child_positions:
-    #         if max_static < child.static_estimate:
-    #             max_static = child.static_estimate
 
+
+###################################################################################
+# Input:
+# Output:
+###################################################################################
+    def static_estimation_midgame(self,board=None,n_moves=None):
+        n_white=0
+        n_black=0
+        n_empty=0
+        if board is None:
+            board = self.board_position
+
+        if n_moves is None and self.parent is not None:
+            n_moves = len(self.parent.child_positions)
+
+        for location in board:
+            if board[location] == "w":
+                n_white +=1
+            elif board[location] == "b":
+                n_black +=1
+            else : 
+                n_empty +=0
+        if n_black <=2:
+            return 10000
+        elif n_white <=2:
+            return -10000
+        elif n_moves ==0:
+            return 10000
+        else:
+            return 1000*(n_white-n_black) - n_moves
+
+
+###################################################################################
+# Input:
+# Output:
+###################################################################################
     def write(self,output_file):
 
         temp_board = self.board_position.copy()
