@@ -111,4 +111,3 @@ def dfs(node,c):
     for child in node.child_positions:
         c=dfs(child,c+1)
     return c
-
