@@ -148,19 +148,19 @@ def minimax_opening(pos,depth=4):
         depth=3
         max_min(root_position,depth)
 
-        print("No of nodes: ",dfs2(root_position,1))
+        print("No of nodes evaluated: ",dfs2(root_position,1))
         x=1
         root_position.white_move.display_position()
         print("Static estimate : ",root_position.static_estimate )
 
 def max_min(node,depth):
     if node.depth == depth:
-        node.static_estimate =  node.static_estimation_opening_black()
+        node.static_estimate =  node.static_estimation_opening()
         return node.static_estimate
     else:
         v = float('-inf')
 
-        child_positions = node.generate_moves_opening(color="b")
+        child_positions = node.generate_moves_opening(color="w")
         for c in child_positions:
             child = Board(c)
             child.parent = node
@@ -170,7 +170,7 @@ def max_min(node,depth):
             child.depth = node.depth+1
             node.child_positions.append(child)
 
-        for child in node.child_positions:
+        # for child in node.child_positions:
         #     v = max(v,min_max(child))
             temp = min_max(child,depth)
             if v<temp :
@@ -183,12 +183,12 @@ def max_min(node,depth):
 
 def min_max(node,depth):
     if node.depth == depth:
-        node.static_estimate =  node.static_estimation_opening_black()
+        node.static_estimate =  node.static_estimation_opening()
         return node.static_estimate
     else:
         v = float('inf')
 
-        child_positions = node.generate_moves_opening(color="w")
+        child_positions = node.generate_moves_opening(color="b")
         for c in child_positions:
             child = Board(c)
             child.parent = node
@@ -198,7 +198,7 @@ def min_max(node,depth):
             child.depth = node.depth+1
             node.child_positions.append(child)
 
-        for child in node.child_positions:
+        # for child in node.child_positions:
         #     v = max(v,min_max(child))
             temp = max_min(child,depth)
             if v>temp :
