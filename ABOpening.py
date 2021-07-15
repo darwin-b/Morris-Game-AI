@@ -32,34 +32,34 @@ def max_min(node,a,b,depth):
     if node.depth == depth:
         node.static_estimate =  node.static_estimation_opening()
         return node.static_estimate
-    else:
-        v = float('-inf')
 
-        child_positions = node.generate_moves_opening(color="w")
-        for c in child_positions:
-            child = Board(c)
-            child.parent = node
+    v = float('-inf')
 
-            if node.depth is None:
-                node.depth=0
-            child.depth = node.depth+1
-            node.child_positions.append(child)
+    child_positions = node.generate_moves_opening(color="w")
+    for c in child_positions:
+        child = Board(c)
+        child.parent = node
 
-        # for child in node.child_positions:
+        if node.depth is None:
+            node.depth=0
+        child.depth = node.depth+1
+        node.child_positions.append(child)
 
-            temp = min_max(child,a,b,depth)
-            if v<temp :
-                v=temp
-                node.white_move = child
-                node.static_estimate = v            
-            if v>=b:
-                # node.static_estimate = v
-                # node.white_move = child
-                return v
-            else:
-                a = max(v,a)
-        # node.static_estimate = v
-        return v
+    # for child in node.child_positions:
+
+        temp = min_max(child,a,b,depth)
+        if v<temp :
+            v=temp
+            node.white_move = child
+            node.static_estimate = v            
+        if v>=b:
+            # node.static_estimate = v
+            # node.white_move = child
+            return v
+
+        a = max(v,a)
+    # node.static_estimate = v
+    return v
 
 
 
@@ -67,35 +67,35 @@ def min_max(node,a,b,depth):
     if node.depth == depth:
         node.static_estimate =  node.static_estimation_opening()
         return node.static_estimate
-    else:
-        v = float('inf')
 
-        child_positions = node.generate_moves_opening(color="b")
-        for c in child_positions:
-            child = Board(c)
-            child.parent = node
+    v = float('inf')
 
-            if node.depth is None:
-                node.depth=0
-            child.depth = node.depth+1
-            node.child_positions.append(child)
+    child_positions = node.generate_moves_opening(color="b")
+    for c in child_positions:
+        child = Board(c)
+        child.parent = node
+
+        if node.depth is None:
+            node.depth=0
+        child.depth = node.depth+1
+        node.child_positions.append(child)
 
 
-        # for child in node.child_positions:
+    # for child in node.child_positions:
 
-            temp = max_min(child,a,b,depth)
-            if v>temp :
-                v=temp
-                node.black_move = child
-                node.static_estimate = v  
-            if v<=a:
-                # node.static_estimate = v
-                # node.black_move = child
-                return v
-            else:
-                b = min(v,b)
-        # node.static_estimate = v
-        return v    
+        temp = max_min(child,a,b,depth)
+        if v>temp :
+            v=temp
+            node.black_move = child
+            node.static_estimate = v  
+        if v<=a:
+            # node.static_estimate = v
+            # node.black_move = child
+            return v
+
+        b = min(v,b)
+    # node.static_estimate = v
+    return v    
 
 
 def dfs(node,c):
@@ -104,11 +104,11 @@ def dfs(node,c):
         # node.display_position()
         # print("================================================\n")
         return c
-    else:
-        # print("=========== ",c," Node===============\n")
-        # node.display_position()
-        # print("=======================================\n")
-        for child in node.child_positions:
-            c=dfs(child,c+1)
-        return c
+
+    # print("=========== ",c," Node===============\n")
+    # node.display_position()
+    # print("=======================================\n")
+    for child in node.child_positions:
+        c=dfs(child,c+1)
+    return c
 
