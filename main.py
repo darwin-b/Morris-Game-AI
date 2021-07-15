@@ -1,5 +1,6 @@
 from MiniMaxOpening import minimax_opening
 from MiniMaxMidgame import minimax_midgame
+from ABOpening import alphabeta_opening
 from classes import Board
 import sys
 import os
@@ -67,34 +68,61 @@ for count,_location in enumerate(input_pos):
     else:
         input_pos[_location]= input[count].lower()
 
-pos = {
-        "a0" : None,
-        "a3" : "w",
-        "a6" : None,
-        "b1" : None,
-        "b3" : "w",
-        "b5" : None,
-        "c2" : None,
-        "c3" : "w",
-        "c4" : None,
-        "d4" : None,
-        "d5" : None,
-        "d6" : None,
-        "e2" : "w",
-        "e3" : "w",
-        "e4" : None,
-        "f1" : "b",
-        "f3" : "b",
-        "f5" : None,
-        "g0" : "b",
-        "g3" : "b",
-        "g6" : "b", 
-}
-input_pos = pos
+# pos = {
+#         "a0" : None,
+#         "a3" : "w",
+#         "a6" : None,
+#         "b1" : None,
+#         "b3" : "w",
+#         "b5" : None,
+#         "c2" : None,
+#         "c3" : "w",
+#         "c4" : None,
+#         "d4" : None,
+#         "d5" : None,
+#         "d6" : None,
+#         "e2" : "w",
+#         "e3" : "w",
+#         "e4" : None,
+#         "f1" : "b",
+#         "f3" : "b",
+#         "f5" : None,
+#         "g0" : "b",
+#         "g3" : "b",
+#         "g6" : "b", 
+# }
 
-# computer_move=minimax_opening(input_pos,depth)
-computer_move = minimax_midgame(input_pos,depth=2)
+# pos = {
+#         "a0" : None,
+#         "a3" : None,
+#         "a6" : "b",
+#         "b1" : None,
+#         "b3" : None,
+#         "b5" : "w",
+#         "c2" : None,
+#         "c3" : None,
+#         "c4" : "w",
+#         "d4" : None,
+#         "d5" : None,
+#         "d6" : None,
+#         "e2" : None,
+#         "e3" : None,
+#         "e4" : None,
+#         "f1" : None,
+#         "f3" : None,
+#         "f5" : None,
+#         "g0" : None,
+#         "g3" : None,
+#         "g6" : "b",
+# }
+# input_pos = pos
+
+# computer_move=minimax_opening(input_pos,depth=3)
+# computer_move = minimax_midgame(input_pos,depth=3)
+computer_move = alphabeta_opening(input_pos,depth=3)
 computer_move.write(output_file)
+
+
 
 print("\n")
 print("Input file: ",input_file)
