@@ -20,7 +20,7 @@ except:
 try:
     depth = int(sys.argv[2])
 except:
-    print("\n","        No argument provided for depth: Defauting to depth = 4  ")
+    print("\n","        No argument provided for depth: Defauting to depth = 3  ")
     print("\n")
     depth = 4
 
@@ -117,12 +117,17 @@ pos = {
 #         "g3" : None,
 #         "g6" : "b",
 # }
-# input_pos = pos
+input_pos2 = pos
 
-computer_move=minimax_opening(input_pos,depth=3)
-# computer_move = minimax_midgame(input_pos,depth=3)
-# computer_move = alphabeta_opening(input_pos,depth=3)
-# computer_move = alphabeta_midgame(input_pos,depth=3)
+# computer_move=minimax_opening(input_pos,depth=3,move="w")
+# computer_move=minimax_opening(input_pos,depth=3,move="b")
+# computer_move = alphabeta_opening(input_pos,depth=3,move="w")
+# computer_move = alphabeta_opening(input_pos,depth=3,move="b")
+
+# computer_move = minimax_midgame(input_pos2,depth=3,move="w")
+computer_move = minimax_midgame(input_pos2,depth=3,move="b")
+# computer_move = alphabeta_midgame(input_pos2,depth=3,move="w")
+# computer_move = alphabeta_midgame(input_pos2,depth=3,move="b")
 computer_move.write(output_file)
 
 
