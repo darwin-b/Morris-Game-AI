@@ -98,7 +98,7 @@ pos = {
 }
 
 
-def minimax_opening(pos,depth=4):
+def minimax_opening(pos,depth=4,move="w"):
         input_position = Board(pos)
         print("**********************************************************************************")
         print("*                                Input Position                                  *")
@@ -111,20 +111,30 @@ def minimax_opening(pos,depth=4):
         root_position.depth=0
 
         depth=3
-        max_min(root_position,depth)
+        max_min(root_position,depth,move)
 
         print("No of nodes evaluated: ",dfs2(root_position,1))
-        root_position.white_move.display_position()
+        root_position.ai_move.display_position()
         print("Static estimate : ",root_position.static_estimate )
 
-def max_min(node,depth):
+def max_min(node,depth,move="w"):
+    if move=="w":
+        max_color="w"
+        min_color="b"
+    else:
+        max_color="b"
+        min_color="w"
+
     if node.depth == depth:
-        node.static_estimate =  node.static_estimation_opening()
+        if max_color=="w":
+            node.static_estimate =  node.static_estimation_opening()
+        else:
+            node.static_estimate =  node.static_estimation_opening_black()
         return node.static_estimate
 
     v = float('-inf')
 
-    child_positions = node.generate_moves_opening(color="w")
+    child_positions = node.generate_moves_opening(color=max_color)
     for c in child_positions:
         child = Board(c)
         child.parent = node
@@ -136,23 +146,33 @@ def max_min(node,depth):
 
     # for child in node.child_positions:
     #     v = max(v,min_max(child))
-        temp = min_max(child,depth)
+        temp = min_max(child,depth,move=min_color)
         if v<temp :
             v=temp
-            node.white_move = child
+            node.ai_move = child
             node.static_estimate = v
 
     return v
 
 
-def min_max(node,depth):
+def min_max(node,depth,move="b"):
+    if move=="b":
+        min_color="b"
+        max_color="w"
+    else:
+        min_color="w"
+        max_color="b"
+
     if node.depth == depth:
-        node.static_estimate =  node.static_estimation_opening()
+        if min_color=="b":
+            node.static_estimate =  node.static_estimation_opening()
+        else:
+            node.static_estimate =  node.static_estimation_opening_black()
         return node.static_estimate
 
     v = float('inf')
 
-    child_positions = node.generate_moves_opening(color="b")
+    child_positions = node.generate_moves_opening(color=min_color)
     for c in child_positions:
         child = Board(c)
         child.parent = node
@@ -164,10 +184,10 @@ def min_max(node,depth):
 
     # for child in node.child_positions:
     #     v = max(v,min_max(child))
-        temp = max_min(child,depth)
+        temp = max_min(child,depth,move=max_color)
         if v>temp :
             v=temp
-            node.black_move = child
+            node.ai_move = child
             node.static_estimate = v      
     return v
 
@@ -190,4 +210,4 @@ def dfs2(node,c):
 
 
 
-minimax_opening(pos)
+minimax_opening(pos,move="b")
