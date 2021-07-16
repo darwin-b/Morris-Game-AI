@@ -15,14 +15,14 @@ except:
     print("\n","        No argument provided for Input Board position: Defauting to board1.txt  ")
     print("\n")
     arg = "board1.txt"
-    depth = 3
+    
 
 try:
     depth = int(sys.argv[2])
 except:
-    print("\n","        No argument provided for depth: Defauting to depth = 4  ")
+    print("\n","        No argument provided for depth: Defauting to depth = 3  ")
     print("\n")
-    depth = 4
+    depth = 3
 
 input_file = cwd +os.path.sep+arg
 output_file = cwd+os.path.sep+"board2.txt"
@@ -117,12 +117,17 @@ pos = {
 #         "g3" : None,
 #         "g6" : "b",
 # }
-# input_pos = pos
+input_pos2 = pos
+# depth=3
+# computer_move=minimax_opening(input_pos,depth,move="w")
+# computer_move=minimax_opening(input_pos,depth,move="b")
+# computer_move = alphabeta_opening(input_pos,depth,move="w")
+computer_move = alphabeta_opening(input_pos,depth,move="b")
 
-computer_move=minimax_opening(input_pos,depth=3)
-# computer_move = minimax_midgame(input_pos,depth=3)
-# computer_move = alphabeta_opening(input_pos,depth=3)
-# computer_move = alphabeta_midgame(input_pos,depth=3)
+# computer_move = minimax_midgame(input_pos2,depth,move="w")
+# computer_move = minimax_midgame(input_pos2,depth,move="b")
+# computer_move = alphabeta_midgame(input_pos2,depth,move="w")
+# computer_move = alphabeta_midgame(input_pos2,depth,move="b")
 computer_move.write(output_file)
 
 
