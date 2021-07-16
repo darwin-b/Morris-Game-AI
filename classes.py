@@ -386,7 +386,7 @@ class Board:
             elif board[location] == "b":
                 n_black +=1
             else : 
-                n_empty +=0
+                n_empty +=1
         return (n_white - n_black)
 
 
@@ -408,7 +408,7 @@ class Board:
             elif board[location] == "b":
                 n_black +=1
             else : 
-                n_empty +=0
+                n_empty +=1
         return (n_black - n_white)        
 
 
@@ -433,7 +433,7 @@ class Board:
             elif board[location] == "b":
                 n_black +=1
             else : 
-                n_empty +=0
+                n_empty +=1
         if n_black <=2:
             return 10000
         elif n_white <=2:
@@ -465,7 +465,7 @@ class Board:
             elif board[location] == "b":
                 n_black +=1
             else : 
-                n_empty +=0
+                n_empty +=1
         if n_white <=2:
             return 10000
         elif n_black <=2:
