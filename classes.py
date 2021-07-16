@@ -31,8 +31,9 @@ class Board:
         self.depth = None
         self.child_positions = []
         self.static_estimate = None
-        self.white_move = None
-        self.black_move =None
+        # self.white_move = None
+        # self.black_move =None
+        self.ai_move=None
 
     # Ignore this method
     # test function to check pass by val and reference
@@ -441,6 +442,39 @@ class Board:
             return 10000
         else:
             return 1000*(n_white-n_black) - n_moves
+
+
+
+###################################################################################
+# Input:
+# Output:
+###################################################################################
+    def static_estimation_midgame_black(self,board=None,n_moves=None):
+        n_white=0
+        n_black=0
+        n_empty=0
+        if board is None:
+            board = self.board_position
+
+        if n_moves is None and self.parent is not None:
+            n_moves = len(self.parent.child_positions)
+
+        for location in board:
+            if board[location] == "w":
+                n_white +=1
+            elif board[location] == "b":
+                n_black +=1
+            else : 
+                n_empty +=0
+        if n_white <=2:
+            return 10000
+        elif n_black <=2:
+            return -10000
+        elif n_moves ==0:
+            return 10000
+        else:
+            return 1000*(n_black-n_white) - n_moves
+
 
 
 ###################################################################################
