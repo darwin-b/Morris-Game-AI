@@ -104,7 +104,7 @@ def min_max(node,a,b,depth=3,move="b"):
         child.depth = node.depth+1
         node.child_positions.append(child)
 
-        temp = max_min(child,a,b,depth)
+        temp = max_min(child,a,b,depth,move=max_color)
         if v>temp :
             v=temp
             node.ai_move = child
