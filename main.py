@@ -26,15 +26,16 @@ except:
 
 input_file = cwd +os.path.sep+arg
 output_file = cwd+os.path.sep+"board2.txt"
+output_file2 = cwd+os.path.sep+"board4.txt"
 
 
 def read(file_path):
     with open(file_path) as file:
-        input = file.read()
-    return input
+        _input = file.read()
+    return _input
 
 try:
-    input = read(input_file)
+    _input = read(input_file)
 except:
     print("Please check if input file exist")
     exit()
@@ -65,10 +66,10 @@ input_pos = {
 }
 
 for count,_location in enumerate(input_pos):
-    if input[count] =="x":
+    if _input[count] =="x":
         input_pos[_location]=None
     else:
-        input_pos[_location]= input[count].lower()
+        input_pos[_location]= _input[count].lower()
 
 pos = {
         "a0" : None,
@@ -122,17 +123,93 @@ input_pos2 = pos
 # computer_move=minimax_opening(input_pos,depth,move="w")
 # computer_move=minimax_opening(input_pos,depth,move="b")
 # computer_move = alphabeta_opening(input_pos,depth,move="w")
-computer_move = alphabeta_opening(input_pos,depth,move="b")
+# computer_move = alphabeta_opening(input_pos,depth,move="b")
 
-# computer_move = minimax_midgame(input_pos2,depth,move="w")
+# computer_move = minimax_midgame(input_pos,depth,move="w")
 # computer_move = minimax_midgame(input_pos2,depth,move="b")
-# computer_move = alphabeta_midgame(input_pos2,depth,move="w")
+# computer_move = alphabeta_midgame(input_pos,depth,move="w")
 # computer_move = alphabeta_midgame(input_pos2,depth,move="b")
-computer_move.write(output_file)
+# computer_move.write(output_file)
+
+choice =""
+while choice!="0":
+    print("Choose From the following:")
+    print("1. MiniMax opening")
+    print("2. MiniMax midgame")
+    print("3. AlphaBeta opening")
+    print("4. AlphaBeta midgame")
+    print("5. Game for black: Minimax opening")
+    print("6. Game for black: Minimax midgame")
+    # print("7. Improved: Minimax openning")
+    # print("8. Improved: Minimax midgame")
+    print("0. Exit (choose 0 to exit the program) ")
+    print("")
+    print("Enter your choice: ")
+    choice = input()
+
+    if choice=="1":
+        computer_move=minimax_opening(input_pos,depth,move="w")
+        computer_move.write(output_file)
+
+        print("\n")
+        print("Input file: ",input_file)
+        print("Output file: ",output_file)
+
+    elif choice=="2":
+        computer_move=minimax_midgame(input_pos,depth,move="w")
+        computer_move.write(output_file2)
+
+        print("\n")
+        print("Input file: ",input_file)
+        print("Output file: ",output_file2)
+
+    elif choice=="3":
+        computer_move=alphabeta_opening(input_pos,depth,move="w")
+        computer_move.write(output_file)
+
+        print("\n")
+        print("Input file: ",input_file)
+        print("Output file: ",output_file)
+
+    elif choice=="4":
+        computer_move=alphabeta_midgame(input_pos,depth,move="w")
+        computer_move.write(output_file2)
+
+        print("\n")
+        print("Input file: ",input_file)
+        print("Output file: ",output_file2)
+
+    elif choice=="5":
+        computer_move=minimax_opening(input_pos,depth,move="b")
+        computer_move.write(output_file)
+
+        print("\n")
+        print("Input file: ",input_file)
+        print("Output file: ",output_file)
+
+    elif choice=="6":
+        computer_move=minimax_midgame(input_pos,depth,move="b")
+        computer_move.write(output_file2)
+
+        print("\n")
+        print("Input file: ",input_file)
+        print("Output file: ",output_file2)
+    
+    # elif choice=="7":
+        # computer_move=minimax_midgame(input_pos,depth,move="w")
+        # computer_move.write(output_file)
+    # elif choice=="8":
+        # computer_move=minimax_midgame(input_pos,depth,move="w")
+        # computer_move.write(output_file)
+    elif choice=="8":
+        print("Exiting...........")
+    else:
+        print("Choose valid Choice!")
+    
+    # print("\n")
+    # print("Input file: ",input_file)
+    # print("Output file: ",output_file)
 
 
 
-print("\n")
-print("Input file: ",input_file)
-print("Output file: ",output_file)
 
