@@ -1,4 +1,6 @@
 from classes import Board
+import sys
+import os
 
 def alphabeta_opening(pos,depth=3,move="w"):
         input_position = Board(pos)
@@ -129,3 +131,78 @@ def dfs(node,c):
     for child in node.child_positions:
         c=dfs(child,c+1)
     return c
+
+
+###################################################################################
+###                                    Main                                     ###
+###################################################################################
+cwd = os.getcwd()
+try:
+    arg = sys.argv[1]
+except:
+    print("\n","        No argument provided for Input Board position: Defauting to board1.txt  ")
+    print("\n")
+    arg = "board1.txt"
+    
+
+try:
+    depth = int(sys.argv[2])
+except:
+    print("\n","        No argument provided for depth: Defauting to depth = 5  ")
+    print("\n")
+    depth = 5
+
+input_file = cwd +os.path.sep+arg
+output_file = cwd+os.path.sep+"board2.txt"
+output_file2 = cwd+os.path.sep+"board4.txt"
+
+
+def read(file_path):
+    with open(file_path) as file:
+        _input = file.read()
+    return _input
+
+try:
+    _input = read(input_file)
+except:
+    print("Please check if input file exist")
+    exit()
+
+# change this initialization for different order of filling when there is tie in static estimate
+input_pos = {
+        "a0" : None,
+        "g0" : None,
+        "b1" : None,
+        "f1" : None,
+        "c2" : None,
+        "e2" : None,
+        "a3" : None,
+        "b3" : None,
+        "c3" : None,
+        "e3" : None,
+        "f3" : None,
+        "g3" : None,
+        "c4" : None,
+        "d4" : None,
+        "e4" : None,
+        "b5" : None,
+        "d5" : None,
+        "f5" : None,
+        "a6" : None,
+        "d6" : None,
+        "g6" : None,
+}
+
+for count,_location in enumerate(input_pos):
+    if _input[count] =="x":
+        input_pos[_location]=None
+    else:
+        input_pos[_location]= _input[count].lower()
+
+
+computer_move=alphabeta_opening(input_pos,depth,move="w")
+computer_move.write(output_file)
+
+print("\n")
+print("Input file: ",input_file)
+print("Output file: ",output_file)

@@ -2,11 +2,7 @@ from classes import Board
 import sys
 import os
 
-###################################################################################
-# Input:
-# Output:
-###################################################################################
-def minimax_opening(pos,depth=3,move="w"):
+def minimax_midgame(pos,depth=3,move="w"):
         input_position = Board(pos)
         print("**********************************************************************************")
         print("*                                Input Position                                  *")
@@ -32,7 +28,7 @@ def minimax_opening(pos,depth=3,move="w"):
         print("**********************************************************************************")
         return root_position.ai_move
 
-        
+
 ###################################################################################
 # Input:
 # Output:
@@ -47,14 +43,14 @@ def max_min(node,depth=3,move="w"):
 
     if node.depth == depth:
         if max_color=="w":
-            node.static_estimate =  node.static_estimation_opening()
+            node.static_estimate =  node.static_estimation_midgame()
         else:
-            node.static_estimate =  node.static_estimation_opening_black()        
+            node.static_estimate =  node.static_estimation_midgame_black()        
         return node.static_estimate
 
     v = float('-inf')
 
-    child_positions = node.generate_moves_opening(color=max_color)
+    child_positions = node.generate_moves_mid_endgame(color=max_color)
     for c in child_positions:
         child = Board(c)
         child.parent = node
@@ -87,14 +83,15 @@ def min_max(node,depth=3,move="b"):
 
     if node.depth == depth:
         if min_color=="b":
-            node.static_estimate =  node.static_estimation_opening()
+            node.static_estimate =  node.static_estimation_midgame()
         else:
-            node.static_estimate =  node.static_estimation_opening_black()
+            node.static_estimate =  node.static_estimation_midgame_black()
         return node.static_estimate
+
 
     v = float('inf')
 
-    child_positions = node.generate_moves_opening(color=min_color)
+    child_positions = node.generate_moves_mid_endgame(color=min_color)
     for c in child_positions:
         child = Board(c)
         child.parent = node
@@ -125,8 +122,6 @@ def dfs(node,c=1):
         c=dfs(child,c+1)
     return c
 
-# minimax_opening(pos)
-
 
 ###################################################################################
 ###                                    Main                                     ###
@@ -135,9 +130,9 @@ cwd = os.getcwd()
 try:
     arg = sys.argv[1]
 except:
-    print("\n","        No argument provided for Input Board position: Defauting to board1.txt  ")
+    print("\n","        No argument provided for Input Board position: Defauting to board3.txt  ")
     print("\n")
-    arg = "board1.txt"
+    arg = "board3.txt"
     
 
 try:
@@ -195,9 +190,9 @@ for count,_location in enumerate(input_pos):
         input_pos[_location]= _input[count].lower()
 
 
-computer_move=minimax_opening(input_pos,depth,move="w")
-computer_move.write(output_file)
+computer_move=minimax_midgame(input_pos,depth,move="w")
+computer_move.write(output_file2)
 
 print("\n")
 print("Input file: ",input_file)
-print("Output file: ",output_file)
+print("Output file: ",output_file2)
